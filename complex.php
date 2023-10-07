@@ -1,5 +1,5 @@
 <?php
-class Complex {
+class Complex implements JsonSerializable {
     private float $a;
     private float $b;
 
@@ -13,41 +13,41 @@ class Complex {
         return $this->a.$sign.abs($this->b).'i';
     }
 
-    public function getA(): float {
+    final public function getA(): float {
         return $this->a;
     }
 
-    public function getB(): float {
+    final public function getB(): float {
         return $this->b;
     }
 
-    public function toJson(): string {
+    public function jsonSerialize(): string {
         return json_encode(['real' => $this->a, 'imaginary' => $this->b]);
     }
 
     public function plus(Complex $complex2): Complex {
-        $a = $this->a + $complex2->getA();
-        $b = $this->b + $complex2->getB();
+        $a = $this->a + $complex2->a;
+        $b = $this->b + $complex2->b;
         return new Complex($a, $b);
     }
 
     public function minus(Complex $complex2): Complex {
-        $a = $this->a - $complex2->getA();
-        $b = $this->b - $complex2->getB();
+        $a = $this->a - $complex2->a;
+        $b = $this->b - $complex2->b;
         return new Complex($a, $b);
     }
 
     public function multiply(Complex $complex2): Complex {
-        $c=$complex2->getA();
-        $d=$complex2->getB();
+        $c=$complex2->a;
+        $d=$complex2->b;
         $a = $this->a*$c - $this->b*$d;
         $b = $this->b*$c + $this->a*$d;
         return new Complex($a, $b);
     }
 
     public function divide(Complex $complex2): Complex {
-        $c=$complex2->getA();
-        $d=$complex2->getB();
+        $c=$complex2->a;
+        $d=$complex2->b;
         $delim = pow($c,2) + pow($d,2);
         $a = ($this->a*$c + $this->b*$d)/$delim;
         $b = ($this->b*$c - $this->a*$d)/$delim;
@@ -61,3 +61,4 @@ $complex2 = new Complex(3, 4);
 $result = $complex1->divide($complex2);
 
 echo $result . PHP_EOL;
+var_dump(json_encode($result));
