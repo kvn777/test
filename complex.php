@@ -1,7 +1,7 @@
 <?php
 class Complex implements JsonSerializable {
-    private float $a;
-    private float $b;
+    private readonly float $a;
+    private readonly float $b;
 
     public function __construct(float $a, float $b) {
         $this->a = $a;
@@ -21,8 +21,8 @@ class Complex implements JsonSerializable {
         return $this->b;
     }
 
-    public function jsonSerialize(): string {
-        return json_encode(['real' => $this->a, 'imaginary' => $this->b]);
+    public function jsonSerialize(): array {
+        return ['real' => $this->a, 'imaginary' => $this->b];
     }
 
     public function plus(Complex $complex2): Complex {
